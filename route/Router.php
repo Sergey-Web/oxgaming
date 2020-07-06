@@ -53,18 +53,4 @@ class Router implements RouterInterface
             $this->params
         );
     }
-
-//    public function __call(string $name, array $arguments): void
-//    {
-//        new \Exception('Route Not Found', 404);
-//    }
-
-//    private function chooseAction()
-//    {
-//        if (array_key_exists($this->method, $this->actions) === false) {
-//            new \Exception('Route Not Found', 404);
-//        }
-//
-//        $this->actions[$this->method]($this->params);
-//    }
 }
