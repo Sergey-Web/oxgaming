@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\Orm\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ */
 class Book
 {
     /**
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
     private int $id;
@@ -24,9 +28,6 @@ class Book
      */
     private string $text;
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
