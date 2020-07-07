@@ -32,7 +32,6 @@ class Router implements RouterInterface
         $this->method = $method;
         $this->params = $params;
         $this->routeSelection();
-
     }
 
     public function buildRoute()
@@ -44,8 +43,12 @@ class Router implements RouterInterface
     {
         $uri = explode('/', $this->requestUri);
 
+        if ($uri[1] === '') {
+           throw new Exception('Route Not Found', 404);
+        }
+
         if (array_key_exists($uri[1], $this->routes) === false) {
-            new Exception('Route Not Found', 404);
+            throw new Exception('Route Not Found', 404);
         }
 
         $this->route = new $this->routes[$uri[1]](

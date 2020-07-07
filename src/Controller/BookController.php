@@ -11,7 +11,6 @@ class BookController implements ControllerInterface
 {
     public function add(Request $request): string
     {
-        var_dump($request->toObject()->book);
-//        return (new Response($request->toJson()))->json();
+        return (new Response($request->toArray()))->json();
     }
 }

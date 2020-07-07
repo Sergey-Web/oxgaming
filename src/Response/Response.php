@@ -6,9 +6,9 @@ namespace App\Response;
 
 class Response implements ResponseInterface
 {
-    public array $data;
+    public $data;
 
-    public function __construct()
+    public function __construct($data)
     {
         $this->data = $data;
     }
