@@ -6,6 +6,8 @@ namespace Route\Handlers;
 
 use App\Controller\BookController;
 use App\Request\Request;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class BookRoute implements RouteInterface
 {
@@ -28,10 +30,10 @@ class BookRoute implements RouteInterface
         $this->params = new Request($params);
     }
 
-    public function get()
+    public function getAction(EntityManagerInterface $entityManager)
     {
         $action = $this->action;
 
-        return (new BookController())->$action($this->params);
+        return (new BookController($entityManager))->$action($this->params);
     }
 }

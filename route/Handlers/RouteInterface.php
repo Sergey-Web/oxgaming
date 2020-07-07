@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Route\Handlers;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 interface RouteInterface
 {
-    function get();
+    function getAction(EntityManagerInterface $entityManager);
 }

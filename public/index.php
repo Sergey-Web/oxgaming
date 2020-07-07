@@ -13,7 +13,8 @@ require_once __DIR__ . '/../bootstrap.php';
 try {
     $params = file_get_contents("php://input");
     $router = new Router($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $params);
-    echo $router->buildRoute();
+    $route = $router->getRoute();
+    $controller = $route->getAction($entityManager);
 } catch (Throwable $e) {
     echo new Exception($e->getMessage(), $e->getCode());
 }

@@ -7,7 +7,6 @@ namespace Route;
 
 use Exception;
 use Route\Handlers\{BookRoute, LogRoute, RouteInterface, UserRoute};
-use stdClass;
 
 
 class Router implements RouterInterface
@@ -34,9 +33,9 @@ class Router implements RouterInterface
         $this->routeSelection();
     }
 
-    public function buildRoute()
+    public function getRoute(): RouteInterface
     {
-        return $this->route->get();
+        return $this->route;
     }
 
     private function routeSelection(): void
