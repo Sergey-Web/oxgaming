@@ -24,18 +24,20 @@ class Book
     private string $name;
 
     /**
-     * @ORM\Column(type="string", length=5242880)
+     * @ORM\Column(type="string", length=10485760)
      */
     private string $text;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $size;
 
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
     public function getName()
     {
         return $this->name;
@@ -58,5 +60,15 @@ class Book
         $this->text = $text;
 
         return $this;
+    }
+
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    public function setSize($size): void
+    {
+        $this->size = $size;
     }
 }

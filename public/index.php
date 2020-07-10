@@ -16,7 +16,9 @@ try {
     $route = $router->getRoute();
     $controller = $route->getAction($entityManager);
 } catch (Throwable $e) {
-    echo new Exception($e->getMessage(), $e->getCode());
+    header('HTTP/1.1 ' . $e->getCode());
+
+    echo new Exception($e->getMessage());
 }
 
 

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 abstract class BaseController
 {
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
