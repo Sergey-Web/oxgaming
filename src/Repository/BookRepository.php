@@ -11,7 +11,7 @@ class BookRepository extends EntityRepository
 {
     public function searchForSizeBook(string $bookName, int $size)
     {
-                /** @var $db EntityRepository */
+        /** @var $db EntityRepository */
         $db = $this->_em->getRepository(Book::class);
 
         return $db->createQueryBuilder('b')

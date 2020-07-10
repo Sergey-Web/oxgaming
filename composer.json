@@ -3,11 +3,12 @@
     "require": {
         "php": "^7.4",
         "predis/predis": "^1.1",
-        "symfony/dotenv": "4.3.*",
         "doctrine/orm": "^2.7",
       "ext-json": "*",
         "doctrine/annotations": "^1.10",
-        "doctrine/migrations": "^2.0"
+        "doctrine/migrations": "^2.0",
+        "symfony/console": "^5.1",
+        "symfony/dotenv": "5.*"
     },
     "autoload": {
         "psr-4": {
