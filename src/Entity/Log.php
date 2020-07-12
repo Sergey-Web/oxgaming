@@ -8,8 +8,8 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="logs",indexes={@ORM\Index(name="logs_created_at", columns={"created_at"})})
+ * @ORM\Entity(repositoryClass="App\Repository\LogRepository")
+ * @ORM\Table(name="logs", indexes={@ORM\Index(name="logs_created_at", columns={"created_at"})})
  */
 class Log
 {
@@ -35,7 +35,7 @@ class Log
         return $this->id;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
@@ -47,7 +47,7 @@ class Log
         return $this;
     }
 
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }

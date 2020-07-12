@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\Log;
+use App\Service\LogService;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,40 +14,39 @@ class ArchiveLogsCommand extends Command
 {
     private EntityManagerInterface $entityManager;
 
+    private LogService $logService;
+
     public function __construct(string $name = null, EntityManagerInterface $entityManager)
     {
         parent::__construct($name);
 
         $this->entityManager = $entityManager;
+        $this->logService = new LogService($entityManager);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('archive:logs')
-            ->setDescription('Save logs per month to the archive table');
+            ->setName('archive:logs:previous_month')
+            ->setDescription('Save logs previous month to the archive table');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->entityManager->getConnection()->beginTransaction();
-        $dateTime = new \DateTime();
-        $fileName = $dateTime->format('Y_m_d').'.csv';
-        $mapping = (new ResultSetMapping())
-            ->addEntityResult(Log::class, 'l')
-            ->addFieldResult('l', 'id', 'id')
-            ->addFieldResult('l', 'created_at', 'createdAt')
-            ->addFieldResult('l', 'text', 'text');
-        $this->entityManager->getConnection()->createNativeQuery("
-                SELECT id, created_at, text
-                FROM logs WHERE date_format(created_at, '%Y%m') = date_format(date_add(now(), interval -1 month), '%Y%m')
-                INTO OUTFILE '". $_ENV['ARCHIVE_LOGS_PATH'] . $fileName ."'
-            ",
-                $mapping
-            )
-        ->getResult();
 
-        $output->writeln('<info>File '. $fileName .' for exporting log archive created!</info>');
+        $this->entityManager->getConnection()->beginTransaction();
+
+
+        $range = [
+            'start' => new \DateTime('first day of -1 month midnight'),
+            'end' => new \DateTime('last day of -1 month midnight'),
+        ];
+
+        $output->writeln('<info> [OK] - Creating file</info>');
+        $file = $this->logService->saveLogsToFile($range);
+        $output->writeln('<info> [OK] - Data saved to file: '. $file .'</info>');
+        $this->logService->import($file);
+        $output->writeln('<info> [OK] - Data saved to table: '. $file .'</info>');
 
         return 0;
     }

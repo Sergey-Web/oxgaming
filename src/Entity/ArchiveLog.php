@@ -8,7 +8,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\ArchiveLogRepository")
  * @ORM\Table(name="archive_logs", options={"engine":"ARCHIVE"})
  */
 class ArchiveLog
@@ -35,23 +35,27 @@ class ArchiveLog
         return $this->id;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt): void
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
-    public function setText(string $text): void
+    public function setText(string $text): self
     {
         $this->text = $text;
+
+        return $this;
     }
 }

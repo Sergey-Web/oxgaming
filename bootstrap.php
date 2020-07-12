@@ -8,6 +8,8 @@ use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
+use DoctrineExtensions\Query\Mysql\DateDiff;
+use DoctrineExtensions\Query\Mysql\DateFormat;
 
 $settings =  require_once __DIR__ . '/config/database.php';
 
@@ -20,6 +22,8 @@ $config = Setup::createAnnotationMetadataConfiguration(
 );
 
 $config->setNamingStrategy(new UnderscoreNamingStrategy());
+$config->addCustomStringFunction('DATE_FORMAT', DateFormat::class);
+
 
 $eventManager = new EventManager();
 
