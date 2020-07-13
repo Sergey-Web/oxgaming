@@ -8,7 +8,6 @@ use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
-use Predis\Client;
 
 $settingsMySql =  require_once __DIR__ . '/config/database.php';
 
@@ -31,6 +30,4 @@ $entityManager = EntityManager::create(
 );
 
 Predis\Autoloader::register();
-
-$clientRedis = new Client();
 
