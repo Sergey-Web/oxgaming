@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
 namespace App\Validation\Handlers;
 
@@ -12,14 +12,10 @@ class UserLogin implements ValidationHandlerInterface
 
     public  function valid(array $data): array
     {
-        $this->name = $data['name'];
         $this->phone = $data['phone'];
+        $this->name = $data['password'];
 
         $errors = $this->checkRequiredFields();
-
-        if (empty($errors)) {
-
-        }
 
         return $errors;
     }

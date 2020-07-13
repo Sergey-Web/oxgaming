@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validation\Handlers;
 
-use App\Validation\Handlers\Fields\{Email, Phone, UserName, ValidationFieldInterface};
+use App\Validation\Handlers\Fields\{Email, Phone, UserName, Password, ValidationFieldInterface};
 use Exception;
 
 class ValueObject implements ValueObjectInterface
@@ -15,6 +15,7 @@ class ValueObject implements ValueObjectInterface
         'name' => UserName::class,
         'lastName' => UserName::class,
         'phone' => Phone::class,
+        'password' => Password::class,
         'email' => Email::class,
     ];
 

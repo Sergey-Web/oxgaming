@@ -36,20 +36,46 @@ class UserController extends BaseController
             return (new Response(['phone' => 'User with a phone already exists']))->json();
         }
 
-        $this->redisService->createUser($request->toArray());
+        $save = $this->redisService->createUser($request->toArray());
+
+        if (!$save) {
+            http_response_code(500 );
+
+            return (new Response(['phone' => 'Internal server error, user not created']))->json();
+        }
 
         return (new Response(['status' => 'ok']))->json();
     }
 
     public function login(Request $request): string
     {
-        $errors = (new Validation('registration'))->check($request->toArray());
+        $errors = (new Validation('login'))->check($request->toArray());
 
         if (!empty($errors)) {
             http_response_code(400);
+
             return (new Response($errors))->json();
         }
 
-        return (new Response(['status' => 'ok']))->json();
+        if ($this->redisService->checkUser($request->toObject()->phone)) {
+            http_response_code(400);
+
+            return (new Response(['phone' => 'Invalid phone or user password']))->json();
+        }
+
+        $password = $this->redisService->checkPassword(
+            $request->toObject()->phone,
+            $request->toObject()->password
+        );
+
+        if ($password === false) {
+            http_response_code(400);
+
+            return (new Response(['phone' => 'Invalid phone or user password']))->json();
+        }
+
+        $user = $this->redisService->getUserData($request->toObject()->phone);
+
+        return (new Response($user))->json();
     }
 }

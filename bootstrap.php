@@ -33,3 +33,4 @@ $entityManager = EntityManager::create(
 Predis\Autoloader::register();
 
 $clientRedis = new Client();
+

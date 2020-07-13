@@ -14,11 +14,14 @@ class UserRegistration implements ValidationHandlerInterface
 
     private ?string $email;
 
+    private ?string $password;
+
     public function valid(array $data): array
     {
         $this->name = $data['name'];
         $this->lastName = $data['last_name'];
         $this->phone = $data['phone'];
+        $this->password = $data['password'];
         $this->email = $data['email'];
 
         $errors = $this->checkRequiredFields();
@@ -35,12 +38,17 @@ class UserRegistration implements ValidationHandlerInterface
         $errors = [];
 
         if ($this->name === null) {
-            $errors[] = ['name' => 'Field "name" is not specified'];
+            $errors[] = ['name' => 'Field name is not specified'];
         }
 
         if ($this->phone === null) {
-            $errors[] = ['phone' => 'Field "phone" is not specified'];;
+            $errors[] = ['phone' => 'Field phone is not specified'];;
         }
+
+        if ($this->password === null) {
+            $errors[] = ['password' => 'Field password is not specified'];;
+        }
+
 
         return $errors;
     }
