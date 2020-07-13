@@ -6,17 +6,23 @@ namespace App\Service;
 
 use App\Entity\ArchiveLog;
 use App\Entity\Log;
+use App\Repository\ArchiveLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Iterator;
 
 class LogService
 {
+    private const LIMIT_WRITE_LOGS = 4;
+
     private EntityManagerInterface $entityManager;
+
+    private NotificationService $notification;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+        $this->notification = new NotificationService();
     }
 
     public function saveLogsToFile(array $range): string
@@ -48,29 +54,33 @@ class LogService
 
     public function import(string $file, array $range)
     {
-        $countRows = $this->getCountRowsFile($file);
-        $this->entityManager->getRepository(ArchiveLog::class)
-//            ...@toDO NEXT..
+        $countRowsFile = $this->getCountRowsFile($file);
+        /** @var ArchiveLogRepository $archiveLogRepository */
+        $archiveLogRepository = $this->entityManager->getRepository(ArchiveLog::class);
+        $archiveLogRepository->saveLog($file);
+        $countRowsAlr = $archiveLogRepository->getCountRange($range['start'], $range['end']);
+
+        if ($countRowsFile !== $countRowsAlr) {
+            throw new Exception('Error of importing logs to the database');
+        }
     }
 
-    private function getCountRowsFile(string $file)
+    private function getCountRowsFile(string $file): int
     {
-        return sizeof (file ($file));
+        return sizeof(file($file));
     }
 
     private function writeLogsToFile(string $pathFile, array $range, int $countLogs): void
     {
-        $limit = 4;
-
         try {
             $this->checkFile($pathFile);
 
-            for ($offset = 0; $countLogs > $offset; $offset += $limit) {
-                $logs = $this->getLogs($range, $offset, $limit);
+            for ($offset = 0; $countLogs > $offset; $offset += static::LIMIT_WRITE_LOGS) {
+                $logs = $this->getLogs($range, $offset, static::LIMIT_WRITE_LOGS);
                 if (empty($logs)) break;
                 $data = $this->generator($logs);
                 file_put_contents($pathFile, iterator_to_array($data), FILE_APPEND);
-                $this->notification(' --- '.$limit .' lines added');
+                $this->notification->view(' ... ' . static::LIMIT_WRITE_LOGS . ' rows added');
             }
         } catch (Exception $e) {}
     }
@@ -95,10 +105,5 @@ class LogService
                 [$item->getId(), $item->getCreatedAt()->format('Y-m-d h:i:s'), $item->getText()]
             ) . "\n";
         }
-    }
-
-    private function notification(string $text): void
-    {
-        echo "\033[32m $text \n";
     }
 }
