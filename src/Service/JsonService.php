@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-class Validation
+class JsonService
 {
-    public function validationJson(): ?string
+    public static function valid(): ?string
     {
         $error = null;
 

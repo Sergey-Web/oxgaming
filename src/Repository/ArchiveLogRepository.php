@@ -31,7 +31,7 @@ class ArchiveLogRepository extends EntityRepository
             ",
                 $mapping
             )->getResult();
-        } catch (Exception $e) { var_dump($e->getMessage());die;}
+        } catch (Exception $e) {}
     }
 
     public function getCountRange(DateTime $dateStart, DateTime $dateEnd): int

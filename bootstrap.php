@@ -8,14 +8,15 @@ use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
+use Predis\Client;
 
-$settings =  require_once __DIR__ . '/config/database.php';
+$settingsMySql =  require_once __DIR__ . '/config/database.php';
 
 $config = Setup::createAnnotationMetadataConfiguration(
-    $settings['doctrine']['metadata_dirs'],
-    $settings['doctrine']['dev_mode'],
-    $settings['doctrine']['proxy_dir'],
-    $settings['doctrine']['cache_dir'] ? new FilesystemCache($settings['doctrine']['cache_dir']) : new ArrayCache(),
+    $settingsMySql['doctrine']['metadata_dirs'],
+    $settingsMySql['doctrine']['dev_mode'],
+    $settingsMySql['doctrine']['proxy_dir'],
+    $settingsMySql['doctrine']['cache_dir'] ? new FilesystemCache($settingsMySql['doctrine']['cache_dir']) : new ArrayCache(),
     false
 );
 
@@ -24,7 +25,11 @@ $config->setNamingStrategy(new UnderscoreNamingStrategy());
 $eventManager = new EventManager();
 
 $entityManager = EntityManager::create(
-    $settings['doctrine']['connection'],
+    $settingsMySql['doctrine']['connection'],
     $config,
     $eventManager
 );
+
+Predis\Autoloader::register();
+
+$clientRedis = new Client();

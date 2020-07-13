@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Request;
 
-use App\Service\Validation;
+use App\Service\JsonService;
 use Exception;
 use stdClass;
 
 class Request implements RequestInterface
 {
-    private $params;
+    private string $params;
 
     public function __construct(string $params)
     {
@@ -35,7 +35,7 @@ class Request implements RequestInterface
 
     private function checkValidationJson()
     {
-        $error = (new Validation())->validationJson();
+        $error = JsonService::valid();
 
         if ($error !== null) {
             throw new Exception($error, 404);
