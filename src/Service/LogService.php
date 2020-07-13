@@ -31,6 +31,10 @@ class LogService
             ->getRepository(Log::class)
             ->getCountRange($range['start'], $range['end']);
 
+        if ($countLogs === 0) {
+            throw new Exception('No logs for the indicated period');
+        }
+
         $dateTime = new \DateTime();
         $fileName = $dateTime->format('Y_m_d').'.csv';
         $pathFile = __DIR__ . '/../../' . $_ENV['ARCHIVE_LOGS_PATH'] . $fileName;
