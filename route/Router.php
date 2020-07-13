@@ -21,7 +21,6 @@ class Router implements RouterInterface
 
     private array $routes = [
         'books' => BookRoute::class,
-        'logs' => LogRoute::class,
         'users' => UserRoute::class,
     ];
 
@@ -51,6 +50,7 @@ class Router implements RouterInterface
         }
 
         $this->route = new $this->routes[$uri[1]](
+            $this->requestUri,
             $this->method,
             $this->params
         );

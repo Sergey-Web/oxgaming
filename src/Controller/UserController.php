@@ -2,15 +2,20 @@
 
 declare(strict_types=1);
 
-
 namespace App\Controller;
 
+use App\Request\Request;
+use App\Response\Response;
 
-class UserController
+class UserController extends BaseController
 {
-
-    function createActions(array $data)
+    public function registration(Request $request): string
     {
-        // TODO: Implement create() method.
+        return (new Response(['status' => 'ok']))->json();
+    }
+
+    public function login(Request $request): string
+    {
+        return (new Response(['status' => 'ok']))->json();
     }
 }

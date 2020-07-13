@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class BookRoute implements RouteInterface
 {
-    private $action;
+    private string $action;
 
     private Request $params;
 
@@ -19,8 +19,7 @@ class BookRoute implements RouteInterface
         'POST' => 'add'
     ];
 
-
-    public function __construct(string $method, string $params)
+    public function __construct(string $url, string $method, string $params)
     {
         if (array_key_exists($method, $this->actions) === false) {
             new \Exception('Route Not Found', 404);

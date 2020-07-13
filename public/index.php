@@ -14,7 +14,7 @@ try {
     $params = file_get_contents("php://input");
     $router = new Router($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $params);
     $route = $router->getRoute();
-    $controller = $route->getAction($entityManager);
+    echo $route->getAction($entityManager);
 } catch (Throwable $e) {
     header('HTTP/1.1 ' . $e->getCode());
 
