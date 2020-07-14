@@ -34,7 +34,6 @@ class ArchiveLogsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->entityManager->getConnection()->beginTransaction();
         $range = [
             'start' => new \DateTime('first day of -1 month midnight'),
             'end' => new \DateTime('last day of -1 month midnight'),
